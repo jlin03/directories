@@ -3,9 +3,20 @@
 #include <sys/stat.h>
 #include <string.h>
 
-int main() {
+int main(int argc, char* argv[]) {
+    char *dirname[256];
+    if(argc>1) {
+        strcpy(dirname,(argv[1]));
+    }
+    else {
+        printf("Input Directory:\n");
+        fgets(dirname,256,stdin);
+    }
     struct dirent *e;
-    DIR *d = opendir("test"); 
+    //DIR *d = opendir(dirname); 
+    if((DIR *d = opendir(dirname))==-1){
+        printf("Error: %s\n",strerror(errno));
+    }
 
     char dirs[64][256];
     char files[64][256];
