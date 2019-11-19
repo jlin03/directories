@@ -1,20 +1,23 @@
-#include <stdio.h> 
-#include <dirent.h> 
+#include <stdio.h>
+#include <dirent.h>
 #include <sys/stat.h>
 #include <string.h>
+#include <errno.h>
 
 int main(int argc, char* argv[]) {
-    char *dirname[256];
+    char dirname[256];
     if(argc>1) {
         strcpy(dirname,(argv[1]));
     }
     else {
-        printf("Input Directory:\n");
-        fgets(dirname,256,stdin);
+        strcpy(dirname,".");
     }
+
+    printf("%s",dirname);
+
     struct dirent *e;
-    //DIR *d = opendir(dirname); 
-    if((DIR *d = opendir(dirname))==-1){
+    DIR *d = opendir(dirname);
+    if(errno>0){
         printf("Error: %s\n",strerror(errno));
     }
 
@@ -42,7 +45,7 @@ int main(int argc, char* argv[]) {
       }
       e = readdir(d);
     }
-    
+
     printf("Statistics for directory: test\n");
     printf("Total Diectory Size: %d Bytes\n",size);
 
@@ -64,9 +67,9 @@ int main(int argc, char* argv[]) {
 
 
     //printf("\"%s\"  Size: %f %s  Permissions: %s  Last Access: %s",f,size,s,perms,ctime(&info.st_atime));
-  
-    closedir(d);     
-    return 0; 
+
+    closedir(d);
+    return 0;
 
 
 
